@@ -1,0 +1,6 @@
+{
+  "_help": "employer_contribution: amount the COMPANY pays out of the carrier premium for an employee (key = Employee ID). The employee is only deducted (carrier cost - this amount).",
+  "employer_contribution": {
+    "CIT-027": 509.30
+  }
+}

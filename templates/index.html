@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% block body %}
+<div class="card"><h2>Generate this month's payroll</h2>
+<p class="sub">Upload the three files. The portal builds the next payroll sheet, keeps all formulas, and highlights anything HR must verify.</p>
+<form method="post" action="{{ url_for('generate') }}" enctype="multipart/form-data"><input type="hidden" name="csrf" value="{{ csrf() }}">
+<div class="slots">
+<div class="slot"><b>1. {{ slots.payroll }}</b><input type="file" name="payroll" accept=".xlsx" required><br><small>Last run's final payroll workbook (e.g. CIT_payroll_Oct-15-2026_Final.xlsx)</small></div>
+<div class="slot"><b>2. {{ slots.invoice }}</b><input type="file" name="invoice" accept=".xlsx" required><br><small>CIT_Invoices-2026.xlsx with the new month's sheet added</small></div>
+<div class="slot"><b>3. {{ slots.health }}</b><input type="file" name="health" accept=".xlsx" required><br><small>Monthly health insurance invoice from the carrier</small></div>
+</div>
+<div class="row"><div><label>Pay-period month (optional)</label><input type="month" name="pay_month"></div>
+<div><label>Run date (optional)</label><input type="date" name="run_date"></div></div>
+<p class="sub" style="margin-top:8px">Leave both empty: the portal moves one month forward from the uploaded payroll and uses the 15th of the following month.</p>
+<button class="btn">Generate payroll</button></form></div>
+<div class="card"><h2>Every month</h2><ol class="steps"><li>Add the new month sheet to the invoice workbook.</li><li>Upload the last payroll, the invoices and the carrier health file here.</li><li>Open the downloaded Excel, work through the yellow / orange / red cells (also listed on the <b>Review Report</b> sheet), then run payroll.</li></ol></div>
+{% endblock %}

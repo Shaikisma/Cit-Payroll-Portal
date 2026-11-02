@@ -1,0 +1,7 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CIT Payroll Portal</title><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head><body>
+<header><h1>CIT Payroll Portal</h1>
+{% if session.ok %}<a href="{{ url_for('index') }}">New payroll</a><a href="{{ url_for('history') }}">History</a>
+<form method="post" action="{{ url_for('logout') }}"><input type="hidden" name="csrf" value="{{ csrf() }}"><button>Log out</button></form>{% endif %}</header>
+<main>{% for cat,msg in get_flashed_messages(with_categories=true) %}<div class="flash">{{ msg }}</div>{% endfor %}
+{% block body %}{% endblock %}</main></body></html>

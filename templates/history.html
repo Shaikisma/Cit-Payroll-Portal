@@ -1,0 +1,6 @@
+{% extends "base.html" %}{% block body %}
+<div class="card"><h2>Previous runs</h2>
+<div class="wrap"><table><tr><th>Created</th><th>Sheet</th><th>Pay period</th><th class="n">Regular gross</th><th class="n">Review items</th><th></th></tr>
+{% for r in items %}<tr><td>{{ r.created }}</td><td>{{ r.sheet_name }}</td><td>{{ r.pay_period }}</td><td class="n">${{ '{:,.2f}'.format(r.totals.gross) }}</td><td class="n">{{ r.issues|length }}</td><td><a href="{{ url_for('run', run_id=r.id) }}">Open</a> · <a href="{{ url_for('download', run_id=r.id) }}">Download</a></td></tr>
+{% else %}<tr><td colspan="6">No runs yet.</td></tr>{% endfor %}</table></div></div>
+{% endblock %}

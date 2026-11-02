@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% block body %}
+<div class="card"><h2>Payroll ready: {{ r.sheet_name }}</h2>
+<p class="sub">Pay period {{ r.pay_period }} · run date {{ r.run_date }} · invoice sheet "{{ r.invoice_sheet }}" · carrier invoice {{ r.health_billing }} · created {{ r.created }}</p>
+<div class="stats"><div class="stat"><span>Employees (Regular)</span><b>{{ r.employees }}</b></div>
+<div class="stat"><span>Regular gross</span><b>${{ '{:,.2f}'.format(r.totals.gross) }}</b></div>
+<div class="stat"><span>Health deducted</span><b>${{ '{:,.2f}'.format(r.totals.health) }}</b></div>
+<div class="stat"><span>Regular net</span><b>${{ '{:,.2f}'.format(r.totals.net) }}</b></div>
+<div class="stat"><span>MPS gross</span><b>${{ '{:,.2f}'.format(r.mps_gross) }}</b></div>
+<div class="stat"><span>Items to review</span><b>{{ r.issues|length }}</b></div></div>
+<a class="btn" href="{{ url_for('download', run_id=r.id) }}">Download Excel</a> <a class="btn alt" href="{{ url_for('index') }}">Run another</a></div>
+<div class="card"><h2>Needs HR attention</h2><p class="sub">Also in the Excel: highlighted cells + "Review Report" sheet. The payroll total is a draft until these are cleared.</p>
+<div class="wrap"><table><tr><th>Level</th><th>Row</th><th>Employee</th><th>What to check</th></tr>
+{% for i in r.issues %}<tr><td><span class="tag {{ i.level }}">{{ {'fix':'FIX','missing':'MISSING','warn':'VERIFY'}[i.level] }}</span></td><td>{{ i.row or '' }}</td><td>{{ i.employee }}</td><td>{{ i.text }}</td></tr>
+{% else %}<tr><td colspan="4">Nothing to review.</td></tr>{% endfor %}</table></div></div>
+<div class="card"><h2>Preview</h2><div class="wrap"><table><tr><th>Block</th><th>ID</th><th>Employee</th><th>Vendor</th><th class="n">Hours</th><th class="n">Pay rate</th><th class="n">Gross</th><th class="n">Health</th><th class="n">Net</th><th></th></tr>
+{% for p in r.preview %}<tr><td>{{ p.block }}</td><td>{{ p.id }}</td><td>{{ p.name }}</td><td>{{ p.vendor }}</td><td class="n">{{ p.hours }}</td><td class="n">{{ '{:,.2f}'.format(p.rate) }}</td><td class="n">{{ '{:,.2f}'.format(p.gross) }}</td><td class="n">{{ '{:,.2f}'.format(p.health) }}</td><td class="n">{{ '{:,.2f}'.format(p.net) }}</td><td><span class="tag {{ p.level }}">{{ 'OK' if p.level=='ok' else 'CHECK' }}</span></td></tr>{% endfor %}</table></div></div>
+{% endblock %}
